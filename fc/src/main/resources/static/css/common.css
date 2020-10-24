@@ -1,0 +1,18 @@
+body {
+	background-color: rgb(245, 245, 245);
+}
+
+.common-width {
+	width: 90%;
+	margin: 0 auto;
+}
+
+.background-color-white {
+	background-color: #fff;
+}
+.margin-top80{
+	margin-top: 80px;
+}
+.div-none{
+	display: none !important;
+}

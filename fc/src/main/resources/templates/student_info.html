@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" th:href="@{/static/css/bootstrap.min.css}"/>
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-table.min.css"
+          th:href="@{/static/css/bootstrap-table.min.css}"/>
+    <link rel="stylesheet" type="text/css" href="css/common.css" th:href="@{/static/css/common.css}"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css" th:href="@{/static/css/index.css}"/>
+    <title>翻转课堂</title>
+</head>
+
+<body>
+<!--顶部导航-->
+
+<div class="container">
+
+    <nav class="navbar navbar-default navbar-fixed-top background-color-white" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">翻转课堂</a>
+        </div>
+
+        <ul class="nav navbar-nav nav-pills">
+
+            <li role="presentation">
+                <a href="#">学校</a>
+            </li>
+            <li role="presentation">
+                <a href="#">教师</a>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    资料
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="#">文档</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">音频</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">图片</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">视频</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    课程
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="#">大学</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">高中</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">初中</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#">小学</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right" style="margin-right: 0;">
+            <li>
+                <form class="navbar-form" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="搜索感兴趣的课程">
+                    </div>
+                    <button type="submit" class="btn btn-default">提交</button>
+                </form>
+            </li>
+            <li th:if="${session.login_user}">
+                <a href="" th:text="${session.login_user.name}"></a>
+            </li>
+            <li id="nav-info-btn" th:if="${session.login_user}">
+                <a href=""><span class="glyphicon glyphicon-user"></span> 我的信息</a>
+            </li>
+            <li id="nav-logout-btn" th:if="${session.login_user}">
+                <a th:href="@{/school/logout}"><span class="glyphicon glyphicon-log-out"></span> 退出</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!--顶部导航-->
+<!--顶部导航-->
+<!--中间-->
+<div class="common-width margin-top80">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+                <!--功能导航-->
+                <nav class="navbar navbar-inverse" role="navigation">
+                    <ul class="nav nav-stacked" id="tabItems">
+                        <li>
+                            <a href="#"><span class="glyphicon glyphicon-education"></span> 我的课程</a>
+                        </li>
+                        <li>
+                            <a href="#"><span class="glyphicon glyphicon-education"></span> 我的教师</a>
+                        </li>
+
+                        <li>
+                            <a href="#"><span class="glyphicon glyphicon-education"></span> 我的提问</a>
+                        </li>
+                        <li>
+                            <a href="#"><span class="glyphicon glyphicon-education"></span> 我的回答</a>
+                        </li>
+                        <li>
+                            <a href="#"><span class="glyphicon glyphicon-education"></span> 成绩统计</a>
+                        </li>
+
+                        <li>
+                            <a href="#"><span class="glyphicon glyphicon-education"></span> 我的信息</a>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+            <!--
+                信息
+            -->
+            <div class="col-md-10" id="tabContent">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        我的课程
+                    </div>
+                    <div class="panel-body">
+                        <table id="course_table" class="table table-hover"
+                               data-response-handler="responseHandler"></table>
+                    </div>
+                </div>
+
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        我的教师
+                    </div>
+                    <div class="panel-body">
+                        <table id="teacher_table" class="table table-hover"
+                               data-response-handler="responseHandler"></table>
+                    </div>
+                </div>
+
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        我的提问
+                    </div>
+                    <div class="panel-body">
+                        <table id="question_table" class="table table-hover"
+                               data-response-handler="responseHandler"></table>
+                    </div>
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        我的回答
+                    </div>
+                    <div class="panel-body">
+                        <table id="answer_table" class="table table-hover"
+                               data-response-handler="responseHandler"></table>
+                    </div>
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        成绩统计
+                    </div>
+                    <div class="panel-body">
+                        <canvas id="scoreChart" height="160"></canvas>
+                    </div>
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        我的信息
+                    </div>
+                    <div class="panel-body">
+
+                    </div>
+                </div>
+
+                <!--
+                    信息面板
+                -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="workModal" tabindex="-1" role="dialog" aria-labelledby="workModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 1150px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="workModalLabel">作业信息</h4>
+            </div>
+            <div class="modal-body">
+                <table id="work_table" class="table table-hover"
+                       data-response-handler="responseHandler"></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="resourceModal" tabindex="-1" role="dialog" aria-labelledby="resourceModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 1150px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="resourceModalLabel">资料信息</h4>
+            </div>
+            <div class="modal-body">
+                <table id="resource_table" class="table table-hover"
+                       data-response-handler="responseHandler"></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="askModal" tabindex="-1" role="dialog" aria-labelledby="askModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 1150px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="askModalLabel">资料信息</h4>
+            </div>
+            <div class="modal-body">
+                <form id="ask_form" role="form">
+                    <div class="form-group">
+                        <label>文本框</label>
+                        <textarea id="ask_question" name="answer" class="form-control" rows="5"></textarea>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button id="ask_question_btn" type="button" class="btn btn-primary">提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-labelledby="replyModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 1150px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="replyModalLabel">资料信息</h4>
+            </div>
+            <div class="modal-body">
+                <form id="reply_form" role="form">
+                    <div class="form-group">
+                        <label>文本框</label>
+                        <textarea id="reply_question" name="answer" class="form-control" rows="5"></textarea>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button id="reply_question_btn" type="button" class="btn btn-primary">提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!--尾部-->
+<div id="foot-pos" class="container-fluid" style="background-color: #000000;color: #999;">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-2">
+            <div class="h3">
+                翻转课堂
+            </div>
+            <div class="text-muted">
+                让每一个有提升愿望的用户能够学到的课程。
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="h4">
+                关于我们
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="h4">
+                友情链接
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="text-center small text-muted">
+            ©2014-2020 icourse163.org
+        </div>
+    </div>
+</div>
+<!--尾部-->
+
+</body>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    ctxPath = /*[[@{/}]]*/ '';
+    /*]]>*/
+    var student_id = [[${session.login_user.id}]];
+</script>
+<script type="text/javascript" src="js/jQuery3.3.1.min.js" th:src="@{/static/js/jQuery3.3.1.min.js}">
+</script>
+<script type="text/javascript" src="js/bootstrap.min.js" th:src="@{/static/js/bootstrap.min.js}">
+</script>
+
+<script type="text/javascript" src="js/bootstrap-table.min.js" th:src="@{/static/js/bootstrap-table.min.js}">
+
+</script>
+
+<script type="text/javascript" src="js/Chart.min.js" th:src="@{/static/js/Chart.min.js}">
+</script>
+<script type="text/javascript" src="js/bootstrap-table-zh-CN.min.js"
+        th:src="@{/static/js/bootstrap-table-zh-CN.min.js}">
+</script>
+
+<script type="text/javascript" src="js/admin.js" th:src="@{/static/js/admin.js}">
+
+</script>
+
+</html>
